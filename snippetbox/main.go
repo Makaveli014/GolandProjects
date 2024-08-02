@@ -25,7 +25,17 @@ func showSnippet(w http.ResponseWriter, r *http.Request) {
 
 // Обработчик для создания новой заметки.
 func createSnippet(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Форма для создания новой заметки..."))
+	if r.Method != http.MethodPost {
+		w.Header().Set("Allow", http.MethodPost)
+
+		// Используем функцию http.Error() для отправки кода состояния 405 с соответствующим сообщением.
+		http.Error(w, "Метод запрещен", 405)
+
+		// Затем мы завершаем работу функции вызвав "return", чтобы
+		// последующий код не выполнялся.
+		return
+	}
+	w.Write([]byte("Cоздание новой заметки..."))
 }
 
 func main() {
